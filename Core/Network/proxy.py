@@ -1,5 +1,6 @@
 from threading import Lock
 
+
 class ProxyProvider:
     def __init__(self, file: str):
         self.file = file
@@ -15,6 +16,12 @@ class ProxyProvider:
                         return None
 
                     proxy = proxies.pop(0)
+
+                    if not any(
+                        proxy.startswith(p)
+                        for p in ["http://", "https://", "socks4://", "socks5://"]
+                    ):
+                        proxy = f"http://{proxy}"
 
                     f.seek(0)
                     f.truncate()

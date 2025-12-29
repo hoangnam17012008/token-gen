@@ -14,7 +14,10 @@ class BrowserFactory:
             "os": "windows",
         }
         if proxy:
-            user, password, server = re.match(r'(.*?):(.*?)@(.*)', proxy).groups()
+            if "://" in proxy:
+                proxy = proxy.split("://", 1)[1]
+
+            user, password, server = re.match(r"(.*?):(.*?)@(.*)", proxy).groups()
             proxy_config = {"server": f"http://{server}"}
             proxy_config["username"] = user
             proxy_config["password"] = password

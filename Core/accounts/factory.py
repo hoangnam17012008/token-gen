@@ -4,6 +4,7 @@ from Core.discord.utils import DiscordUtils
 from Core.discord.headers import HeaderBuilder
 from Core.NexusColors.color import NexusColor
 
+
 class AccountContextFactory:
     def __init__(self, session, proxy, logger, mail_api):
         self.session = session
@@ -13,20 +14,19 @@ class AccountContextFactory:
 
     def create(self) -> AccountContext:
         dcfduid, sdcfduid = DiscordUtils.fetch_cookies(self.session)
-        fingerprint = DiscordUtils.get_fingerprint(
-            dcfduid, sdcfduid, self.session
-        )
+        fingerprint = DiscordUtils.get_fingerprint(dcfduid, sdcfduid, self.session)
 
         username = Utils.random_string()
         self.logger.log(f"Got Username -> {NexusColor.PURPLE}{username}")
         password = Utils.random_password()
         self.logger.log(f"Got Password -> {NexusColor.PURPLE}{password}")
-        email = self.mail_api.create_account(username, password)
+        email, password = self.mail_api.create_account(username, password)
         self.logger.log(f"Got Mail -> {NexusColor.PURPLE}{email}")
+        # Log the potentially new password (e.g. token)
+        # self.logger.log(f"Mail Password/Token -> {NexusColor.PURPLE}{password}")
         birthday = Utils.random_birthday()
         y, m, d = birthday
-        self.logger.log(f"Got Birthday -> {NexusColor.PURPLE}{f"{y}-{m:02d}-{d:02d}"}")
-        
+        self.logger.log(f"Got Birthday -> {NexusColor.PURPLE}{f'{y}-{m:02d}-{d:02d}'}")
 
         headers = HeaderBuilder(self.session).build(fp=fingerprint)
         self.session.headers.update(headers)
@@ -37,5 +37,5 @@ class AccountContextFactory:
             password=password,
             email=email,
             birthday=birthday,
-            proxy=self.proxy
+            proxy=self.proxy,
         )

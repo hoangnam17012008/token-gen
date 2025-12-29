@@ -23,7 +23,9 @@ class APIServer:
     def _routes(self):
         @self.app.route("/solve")
         def solve():
-            taskid = "".join(random.choices(string.ascii_lowercase + string.digits, k=5))
+            taskid = "".join(
+                random.choices(string.ascii_lowercase + string.digits, k=5)
+            )
             self.store.create(taskid)
 
             asyncio.run_coroutine_threadsafe(
@@ -43,4 +45,4 @@ class APIServer:
             return self.store.get(taskid)
 
     def run(self):
-        self.app.run("0.0.0.0", 5001, debug=False, use_reloader=False)
+        self.app.run("0.0.0.0", 6946, debug=False, use_reloader=False)

@@ -1,5 +1,6 @@
 import curl_cffi
 
+
 class DiscordSessionFactory:
     def __init__(self, proxy: str | None):
         self.proxy = proxy
@@ -9,8 +10,8 @@ class DiscordSessionFactory:
 
         if self.proxy:
             session.proxies = {
-                "http": f"http://{self.proxy}",
-                "https": f"http://{self.proxy}",
+                "http": self.proxy,
+                "https": self.proxy,
             }
 
         return session

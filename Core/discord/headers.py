@@ -1,14 +1,15 @@
-
 import json
 import time
 import base64
 import uuid
+import re
 
 from platform import system, release
 
 from typing import Optional
 
 from Core.discord.utils import DiscordUtils
+
 
 class HeaderBuilder:
     def __init__(self, session):
@@ -22,7 +23,6 @@ class HeaderBuilder:
             "AppleWebKit/537.36 (KHTML, like Gecko) "
             f"Chrome/{self.chrome_version}.0.0.0 Safari/537.36"
         )
-
 
     def _super_properties(self) -> str:
         payload = {
@@ -47,10 +47,8 @@ class HeaderBuilder:
             "client_app_state": "focused",
         }
 
-
         raw = json.dumps(payload, separators=(",", ":")).encode()
         return base64.b64encode(raw).decode()
-
 
     def _fetch_cookies(self, token: str) -> str:
         now = time.time()
@@ -80,11 +78,9 @@ class HeaderBuilder:
         except Exception:
             return ""
 
-
     def _context_properties(self, location: str) -> str:
         payload = {"location": location}
         return base64.b64encode(json.dumps(payload).encode()).decode()
-
 
     def build(
         self,

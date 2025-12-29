@@ -2,11 +2,12 @@ from Core.NexusColors.color import NexusColor
 
 
 class VatosLogger:
-    
     def __init__(self, config):
-        self.LC = f"{NexusColor.PURPLE}[{NexusColor.LIGHTBLACK}VATOS{NexusColor.PURPLE}] "
+        self.LC = (
+            f"{NexusColor.PURPLE}[{NexusColor.LIGHTBLACK}VATOS{NexusColor.PURPLE}] "
+        )
         self.config = config
-        
+
     def log(self, msg: str) -> None:
         print(self.LC + NexusColor.LIGHTBLACK + msg)
 
@@ -21,5 +22,5 @@ class VatosLogger:
                 censored_part3 = "*******" + part3[-6:]
 
                 token = f"{censored_part1}.{part2}.{censored_part3}"
-    
+
         print(self.LC + NexusColor.LIGHTBLACK + msg + token)

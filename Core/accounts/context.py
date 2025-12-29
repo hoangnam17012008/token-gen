@@ -3,6 +3,7 @@ from collections import deque
 from typing import Optional, Tuple
 from time import time
 
+
 @dataclass
 class AccountContext:
     fingerprint: str
@@ -15,7 +16,8 @@ class AccountContext:
     captcha_key: Optional[str] = None
     token: Optional[str] = None
     upn: Optional[str] = None
-    
+
+
 @dataclass
 class TitleBarStats:
     token_generated: int = 0

@@ -4,15 +4,14 @@ import re
 from abc import ABC, abstractmethod
 from typing import Dict, Optional
 
+
 class MailApi(ABC):
     def __init__(self, api_key: str):
         self.api_key = api_key
-        self.headers: Dict[str, str] = {
-            "X-API-Key": api_key
-        }
+        self.headers: Dict[str, str] = {"X-API-Key": api_key}
 
     @abstractmethod
-    def create_account(self, username: str, password: str) -> Optional[str]:
+    def create_account(self, username: str, password: str) -> tuple[str, str]:
         pass
 
     @abstractmethod
@@ -20,11 +19,7 @@ class MailApi(ABC):
         pass
 
     def wait_for_verification(
-        self,
-        email: str,
-        password: str,
-        poll_interval: int = 1,
-        timeout: int = 30
+        self, email: str, password: str, poll_interval: int = 1, timeout: int = 30
     ) -> Optional[str]:
         start_time = time.time()
 
@@ -37,7 +32,7 @@ class MailApi(ABC):
                     if match:
                         return match.group(1)
             except Exception as e:
-                  raise RuntimeError(e)
+                raise RuntimeError(e)
 
             time.sleep(poll_interval)
 

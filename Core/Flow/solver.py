@@ -3,12 +3,12 @@ import requests
 
 from Core.NexusColors.color import NexusColor
 
+
 class Solver:
-    
     def __init__(self, logger, config):
         self.logger = logger
         self.config = config
-        
+
     def start_solve(self, rqdata: str, proxy: str) -> str:
         params = {
             "url": "https://discord.com/register",
@@ -18,7 +18,7 @@ class Solver:
         }
 
         r = requests.get(
-            "http://127.0.0.1:5001/solve",
+            "http://127.0.0.1:6946/solve",
             params=params,
             timeout=10,
         )
@@ -28,12 +28,12 @@ class Solver:
     def wait_for_result(self, taskid: str, timeout: int = 100):
         if self.config["captcha_timeout"]:
             timeout = self.config["captcha_timeout"]
-            
+
         start = time.time()
 
         while True:
             r = requests.get(
-                f"http://127.0.0.1:5001/task/{taskid}",
+                f"http://127.0.0.1:6946/task/{taskid}",
                 timeout=10,
             )
             r.raise_for_status()
@@ -43,14 +43,17 @@ class Solver:
 
             if status == "success":
                 elapsed = time.time() - start
-                self.logger.log(f"Captcha Solved in {NexusColor.PURPLE}{elapsed:.1f}s {NexusColor.LIGHTBLACK}({NexusColor.PURPLE}{data["uuid"][:64]}{NexusColor.LIGHTBLACK})")
+                uuid_str = data["uuid"][:64]
+                self.logger.log(
+                    f"Captcha Solved in {NexusColor.PURPLE}{elapsed:.1f}s {NexusColor.LIGHTBLACK}({NexusColor.PURPLE}{uuid_str}{NexusColor.LIGHTBLACK})"
+                )
                 return data
-            
+
             if status == "error":
                 raise RuntimeError("Captcha solve failed")
 
             if time.time() - start > timeout:
-                 raise TimeoutError("Captcha solve timed out")
+                raise TimeoutError("Captcha solve timed out")
 
             time.sleep(1)
 

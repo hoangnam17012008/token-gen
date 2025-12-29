@@ -1,17 +1,18 @@
 {
     "threads": 1,
+    "use_proxies": true,
     "captcha_timeout": 100,
     "solver": {
-        "ai_service": "openrouter",
+        "ai_service": "groq",
         "ai_api_key": ""
     },
     "verification": {
-        "mail_provider": "cybertemp",
+        "mail_provider": "kanashi",
         "mail_api_key": ""
     },
     "humanizer": {
         "enabled": true,
-        "avatar": true,
+        "avatar": false,
         "pronouns": true,
         "bio": true,
         "display_name": true

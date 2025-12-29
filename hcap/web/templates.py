@@ -25,8 +25,11 @@ class TemplateCache:
         with open(api_path, "r", encoding="utf-8") as f:
             self.api_js = f.read()
 
-    def render_main(self, sitekey):
-        return self.HTML_TEMPLATE.replace("NOTASITEKEY", sitekey)
+    def render_main(self, sitekey, rqdata=None):
+        html = self.HTML_TEMPLATE.replace("NOTASITEKEY", sitekey)
+        if rqdata:
+            html = html.replace("data-sitekey", f'data-rqdata="{rqdata}" data-sitekey')
+        return html
 
     def render_hcaptcha(self, rqdata=None):
         html = self.hcaptcha_html
