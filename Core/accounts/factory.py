@@ -19,8 +19,9 @@ class AccountContextFactory:
         username = Utils.random_string()
         self.logger.log(f"Got Username -> {NexusColor.PURPLE}{username}")
         password = Utils.random_password()
-        self.logger.log(f"Got Password -> {NexusColor.PURPLE}{password}")
+
         email, password = self.mail_api.create_account(username, password)
+        self.logger.log(f"Got Password -> {NexusColor.PURPLE}{password}")
         self.logger.log(f"Got Mail -> {NexusColor.PURPLE}{email}")
         # Log the potentially new password (e.g. token)
         # self.logger.log(f"Mail Password/Token -> {NexusColor.PURPLE}{password}")
